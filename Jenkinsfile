@@ -135,11 +135,11 @@ pipeline
                 {
                     STAGE = 'Deploy to ECR'
                     sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 006262944085.dkr.ecr.us-east-2.amazonaws.com"
-                    sh "docker tag task_master_webserver:latest:latest 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:${TAG_ECR}"
+                    sh "docker tag task_master_webserver:latest 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:${TAG_ECR}"
                     sh "docker push 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:${TAG_ECR}"
                     if(PREFIX_MAJOR > NEWEST_MAJOR || (PREFIX_MAJOR == NEWEST_MAJOR && PREFIX_MINOR >= NEWEST_MINOR))
                     {
-                        sh "docker tag task_master_webserver:latest:latest 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:latest"
+                        sh "docker tag task_master_webserver:latest 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:latest"
                         sh "docker push 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:latest"
                         VER_CHECK = 'true'
                         sh 'echo "TRUE"'
