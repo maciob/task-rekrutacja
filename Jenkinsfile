@@ -93,15 +93,19 @@ pipeline
                         SKIP = 'true';  
                         sh "echo 'ERROR no version specified'" 
                         return 'ERROR no version specified'
-                    }  
-                    ORIGINAL = sh(returnStdout: true, script:"git tag --sort=creatordate | grep v.${PREFIX} | tail -1 | cut -d '.' -f2-4").trim()
-                    NEWEST = sh(returnStdout: true, script:"git tag --sort=v:refname | tail -1 | cut -d '.' -f2-3").trim()
-                    NEWEST = "${NEWEST}" as float;  
-                    NEWEST_MAJOR = sh(returnStdout: true, script:"echo '${NEWEST}' | cut -d '.' -f1").trim()
-                    NEWEST_MINOR = sh(returnStdout: true, script:"echo '${NEWEST}' | cut -d '.' -f2").trim()
-                    NEWEST_MAJOR = "${NEWEST_MAJOR}" as int;  
-                    NEWEST_MINOR = "${NEWEST_MINOR}" as int;  
-
+                    } 
+                    try {
+                        ORIGINAL = sh(returnStdout: true, script:"git tag --sort=creatordate | grep v.${PREFIX} | tail -1 | cut -d '.' -f2-4").trim()
+                        NEWEST = sh(returnStdout: true, script:"git tag --sort=v:refname | tail -1 | cut -d '.' -f2-3").trim()
+                        NEWEST = "${NEWEST}" as float;  
+                        NEWEST_MAJOR = sh(returnStdout: true, script:"echo '${NEWEST}' | cut -d '.' -f1").trim()
+                        NEWEST_MINOR = sh(returnStdout: true, script:"echo '${NEWEST}' | cut -d '.' -f2").trim()
+                        NEWEST_MAJOR = "${NEWEST_MAJOR}" as int;  
+                        NEWEST_MINOR = "${NEWEST_MINOR}" as int;  
+                    }
+                    catch(exc) {
+                        sh "NO TAGS"
+                    }
                     try
                     {
                         SUFFIX = sh(returnStdout: true, script:"echo '${ORIGINAL}' | cut -d '.' -f3 ").trim()
