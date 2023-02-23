@@ -104,7 +104,7 @@ pipeline
                         NEWEST_MINOR = "${NEWEST_MINOR}" as int;  
                     }
                     catch(exc) {
-                        sh "NO TAGS"
+                        sh "echo 'NO TAGS'"
                     }
                     try
                     {
