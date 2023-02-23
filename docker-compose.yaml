@@ -1,0 +1,18 @@
+services: 
+  webserver:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: webserver
+    environment:
+      ADDRESS: localhost
+    ports:
+     - 80:80
+     - 443:443
+    networks:
+     - rekru
+    command: /bin/sh -c "export ADDRESS && envsubst '$${ADDRESS}' < /etc/nginx/templates/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+
+networks:
+  rekru:
+    name: rekru
