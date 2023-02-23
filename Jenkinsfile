@@ -38,7 +38,7 @@ pipeline
                     // withCredentials([gitUsernamePassword(credentialsId: 'dd3e0506-084f-4381-9857-befea63af554', gitToolName: 'Default')]) { 
                     //     sh "git fetch https://github.com/maciob/task-rekrutacja --tags"
                     // }
-                    // NEED TO FETCH THE TAGS
+                    // WE NEED TO FETCH THE TAGS FOR THE VERSION CONTROL
                     sh "git fetch https://github.com/maciob/task-rekrutacja --tags"
                     LOG = sh(returnStdout: true, script:"git log --oneline | head -1 | cut -d ')' -f2").trim()
                 }
