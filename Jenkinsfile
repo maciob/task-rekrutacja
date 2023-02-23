@@ -105,6 +105,10 @@ pipeline
                     }
                     catch(exc) {
                         sh "echo 'NO TAGS'"
+                        NEWEST_MAJOR = sh(returnStdout: true, script:"echo '${PREFIX}' | cut -d '.' -f1").trim()
+                        NEWEST_MINOR = sh(returnStdout: true, script:"echo '${PREFIX}' | cut -d '.' -f2").trim()
+                        NEWEST_MAJOR = "${NEWEST_MAJOR}" as int;  
+                        NEWEST_MINOR = "${NEWEST_MINOR}" as int;  
                     }
                     try
                     {
