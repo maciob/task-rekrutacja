@@ -35,12 +35,12 @@ pipeline
                 script 
                 {
                     // REPO IS PUBLIC SO WE DO NOT NEED TO USE LOGIN AND PASSWORD FOR GIT, BUT IF IT WAS PRIVATE IT WOULD LOOK LIKE THIS:
-                    // withCredentials([gitUsernamePassword(credentialsId: '<id>', gitToolName: 'Default')]) { 
-                    //     sh "git fetch https://github.com/maciob/task-rekrutacja --tags"
-                    // }
+                    withCredentials([gitUsernamePassword(credentialsId: 'dd3e0506-084f-4381-9857-befea63af554', gitToolName: 'Default')]) { 
+                        sh "git fetch https://github.com/maciob/task-rekrutacja --tags"
+                    }
                     // LOG = sh(returnStdout: true, script:"git log --oneline | head -1 | cut -d ')' -f2").trim()
                     // NEED TO FETCH THE TAGS
-                    sh "git fetch https://github.com/maciob/task-rekrutacja --tags"
+                    // sh "git fetch https://github.com/maciob/task-rekrutacja --tags"
                 }
             }
         }
@@ -130,13 +130,13 @@ pipeline
                 script 
                 {
                     STAGE = 'Deploy to ECR'
-                    sh "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 644435390668.dkr.ecr.eu-west-2.amazonaws.com"
-                    sh "docker tag task-rekrutacja_master_webserver:latest 644435390668.dkr.ecr.eu-west-2.amazonaws.com/magisterka-front:${TAG_ECR}"
-                    sh "docker push 644435390668.dkr.ecr.eu-west-2.amazonaws.com/magisterka-front:${TAG_ECR}"
+                    sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 006262944085.dkr.ecr.us-east-2.amazonaws.com"
+                    sh "docker tag task_master_webserver:latest:latest 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:${TAG_ECR}"
+                    sh "docker push 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:${TAG_ECR}"
                     if(PREFIX_MAJOR > NEWEST_MAJOR || (PREFIX_MAJOR == NEWEST_MAJOR && PREFIX_MINOR >= NEWEST_MINOR))
                     {
-                        sh "docker tag task-rekrutacja_master_webserver:latest 644435390668.dkr.ecr.eu-west-2.amazonaws.com/magisterka-front:latest"
-                        sh "docker push 644435390668.dkr.ecr.eu-west-2.amazonaws.com/magisterka-front:latest"
+                        sh "docker tag task_master_webserver:latest:latest 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:latest"
+                        sh "docker push 006262944085.dkr.ecr.us-east-2.amazonaws.com/task:latest"
                         VER_CHECK = 'true'
                         sh 'echo "TRUE"'
                     }
@@ -155,7 +155,7 @@ pipeline
                     STAGE = 'GIT TAG'
                     sh 'git clean -f -x'
                     sh "git tag ${TAG_testing}"
-                    withCredentials([gitUsernamePassword(credentialsId: '781630fc-34c9-4810-9226-e844ac17971c', gitToolName: 'Default')]) { 
+                    withCredentials([gitUsernamePassword(credentialsId: 'dd3e0506-084f-4381-9857-befea63af554', gitToolName: 'Default')]) { 
                         sh "git push https://github.com/maciob/task-rekrutacja --tags"
                     }
                 }
